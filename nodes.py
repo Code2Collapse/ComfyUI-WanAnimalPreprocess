@@ -12,6 +12,7 @@ import cv2
 import json
 import logging
 
+from . import _interrupt_check as _IC
 script_directory = os.path.dirname(os.path.abspath(__file__))
 
 from comfy import model_management as mm
@@ -158,6 +159,7 @@ class AnimalPoseAndDetection:
         progress = 0
         bboxes = []
         for img in tqdm(images_np, total=len(images_np), desc="Detecting animal bboxes"):
+            _IC.check()
             bboxes.append(detector(
                 cv2.resize(img, (640, 640)).transpose(2, 0, 1)[None],
                 shape
@@ -459,6 +461,7 @@ class AnimalPoseDetectionOneToAllAnimation:
         progress = 0
         bboxes = []
         for img in tqdm(images_np, total=len(images_np), desc="Detecting animal bboxes"):
+            _IC.check()
             bboxes.append(detector(
                 cv2.resize(img, (640, 640)).transpose(2, 0, 1)[None],
                 shape
