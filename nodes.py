@@ -120,7 +120,7 @@ class AnimalPoseAndDetection:
 
         B, H, W, C = images.shape
         shape = np.array([H, W])[None]
-        images_np = images.numpy()
+        images_np = images.detach().cpu().numpy() if hasattr(images, "detach") else images.cpu().numpy()
 
         IMG_NORM_MEAN = np.array([0.485, 0.456, 0.406])
         IMG_NORM_STD = np.array([0.229, 0.224, 0.225])
@@ -134,7 +134,9 @@ class AnimalPoseAndDetection:
         refer_pose_meta = None
         refer_img = None
         if retarget_image is not None:
-            refer_img = resize_by_area(retarget_image[0].numpy() * 255, width * height, divisor=16) / 255.0
+            _rt = retarget_image[0]
+            _rt_np = _rt.detach().cpu().numpy() if hasattr(_rt, "detach") else _rt.cpu().numpy()
+            refer_img = resize_by_area(_rt_np * 255, width * height, divisor=16) / 255.0
             ref_bbox = (detector(
                 cv2.resize(refer_img.astype(np.float32), (640, 640)).transpose(2, 0, 1)[None],
                 shape
@@ -418,7 +420,7 @@ class AnimalPoseDetectionOneToAllAnimation:
         B, H, W, C = images.shape
 
         shape = np.array([H, W])[None]
-        images_np = images.numpy()
+        images_np = images.detach().cpu().numpy() if hasattr(images, "detach") else images.cpu().numpy()
 
         IMG_NORM_MEAN = np.array([0.485, 0.456, 0.406])
         IMG_NORM_STD = np.array([0.229, 0.224, 0.225])
@@ -433,7 +435,8 @@ class AnimalPoseDetectionOneToAllAnimation:
         refer_pose_meta = None
         refer_img_np = None
         if ref_image is not None:
-            refer_img_np = ref_image[0].numpy() * 255
+            _ri = ref_image[0]
+            refer_img_np = (_ri.detach().cpu().numpy() if hasattr(_ri, "detach") else _ri.cpu().numpy()) * 255
             refer_img = resize_by_area(refer_img_np, width * height, divisor=16) / 255.0
             ref_bbox = (detector(
                 cv2.resize(refer_img.astype(np.float32), (640, 640)).transpose(2, 0, 1)[None],
