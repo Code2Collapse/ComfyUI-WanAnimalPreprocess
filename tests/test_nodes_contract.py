@@ -11,17 +11,44 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def _load_nodes_module():
-    if str(ROOT) not in sys.path:
-        sys.path.insert(0, str(ROOT))
-    spec = importlib.util.spec_from_file_location("wan_animal_nodes", ROOT / "nodes.py")
+_PKG = "wan_animal_pack"
+
+
+def _load_pack():
+    """Load the pack the way ComfyUI does - as a package, so nodes.py's
+    relative imports resolve and __init__.py's registration runs."""
+    if _PKG in sys.modules:
+        return sys.modules[_PKG]
+    spec = importlib.util.spec_from_file_location(
+        _PKG, ROOT / "__init__.py", submodule_search_locations=[str(ROOT)])
     assert spec and spec.loader
-    mod = importlib.util.module_from_spec(spec)
+    pkg = importlib.util.module_from_spec(spec)
+    sys.modules[_PKG] = pkg
     try:
-        spec.loader.exec_module(mod)
+        spec.loader.exec_module(pkg)
     except ModuleNotFoundError as exc:
-        pytest.skip(f"nodes.py dependencies unavailable: {exc}")
-    return mod
+        sys.modules.pop(_PKG, None)
+        pytest.skip(f"nodes.py dependencies unavailable (set COMFYUI_PATH): {exc}")
+    return pkg
+
+
+def _load_nodes_module():
+    _load_pack()
+    return sys.modules[f"{_PKG}.nodes"]
+
+
+@pytest.mark.skipif(
+    importlib.util.find_spec("torch") is None,
+    reason="torch not installed in this interpreter",
+)
+def test_every_node_sits_under_the_code2collapse_menu_root():
+    pack = _load_pack()
+    assert pack.NODE_CLASS_MAPPINGS
+    for name, cls in pack.NODE_CLASS_MAPPINGS.items():
+        assert cls.CATEGORY.startswith("\U0001F43A C2C/\U0001F43E Wan Animal Preprocess"), (
+            f"{name}: {cls.CATEGORY}")
+    assert pack.WEB_DIRECTORY == "./web"
+    assert (ROOT / "web" / "_c2c_brand.js").is_file()
 
 
 @pytest.mark.skipif(
