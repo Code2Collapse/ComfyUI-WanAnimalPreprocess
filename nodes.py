@@ -169,9 +169,13 @@ class AnimalPoseAndDetection:
             _rt = retarget_image[0]
             _rt_np = _rt.detach().cpu().numpy() if hasattr(_rt, "detach") else _rt.cpu().numpy()
             refer_img = resize_by_area(_rt_np * 255, width * height, divisor=16) / 255.0
+            # The reference lives in ITS OWN pixel space (A22 L9.116): the detector scales its box by shape_raw and
+            # the keypoints are normalised below, both with the resized reference's size - not the video's shape
+            # (wrong crop) and not the original reference size (mis-scaled skeleton). As in WanAnimatePreprocessV2.
+            ref_h, ref_w = refer_img.shape[:2]
             ref_bbox = (detector(
                 cv2.resize(refer_img.astype(np.float32), (640, 640)).transpose(2, 0, 1)[None],
-                shape
+                np.array([ref_h, ref_w])[None]
             )[0][0]["bbox"])
 
             if ref_bbox is None or ref_bbox[-1] <= 0 or (ref_bbox[2] - ref_bbox[0]) < 10 or (ref_bbox[3] - ref_bbox[1]) < 10:
@@ -184,9 +188,7 @@ class AnimalPoseAndDetection:
             img_norm = img_norm.transpose(2, 0, 1).astype(np.float32)
 
             ref_keypoints = pose_model(img_norm[None], np.array(center)[None], np.array(scale)[None])
-            refer_pose_meta = load_pose_metas_from_kp2ds_seq(
-                ref_keypoints, width=retarget_image.shape[2], height=retarget_image.shape[1]
-            )[0]
+            refer_pose_meta = load_pose_metas_from_kp2ds_seq(ref_keypoints, width=ref_w, height=ref_h)[0]
 
         # Detect bounding boxes
         comfy_pbar = ProgressBar(B * 2)
@@ -496,9 +498,10 @@ class AnimalPoseDetectionOneToAllAnimation:
             _ri = ref_image[0]
             refer_img_np = (_ri.detach().cpu().numpy() if hasattr(_ri, "detach") else _ri.cpu().numpy()) * 255
             refer_img = resize_by_area(refer_img_np, width * height, divisor=16) / 255.0
+            ref_h, ref_w = refer_img.shape[:2]       # the reference's own pixel space (A22 L9.116, see above)
             ref_bbox = (detector(
                 cv2.resize(refer_img.astype(np.float32), (640, 640)).transpose(2, 0, 1)[None],
-                shape
+                np.array([ref_h, ref_w])[None]
             )[0][0]["bbox"])
 
             if ref_bbox is None or ref_bbox[-1] <= 0 or (ref_bbox[2] - ref_bbox[0]) < 10 or (ref_bbox[3] - ref_bbox[1]) < 10:
@@ -511,9 +514,7 @@ class AnimalPoseDetectionOneToAllAnimation:
             img_norm = img_norm.transpose(2, 0, 1).astype(np.float32)
 
             ref_keypoints = pose_model(img_norm[None], np.array(center)[None], np.array(scale)[None])
-            refer_pose_meta = load_pose_metas_from_kp2ds_seq(
-                ref_keypoints, width=ref_image.shape[2], height=ref_image.shape[1]
-            )[0]
+            refer_pose_meta = load_pose_metas_from_kp2ds_seq(ref_keypoints, width=ref_w, height=ref_h)[0]
 
             ref_dwpose = aaposemeta_to_dwpose(refer_pose_meta)
 
