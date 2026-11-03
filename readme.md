@@ -100,7 +100,9 @@ Main processing node for image/video pose estimation.
 - `model` — from model loader
 - `images` — input frames (IMAGE batch)
 - `width` / `height` — target output dimensions
-- `retarget_image` (optional) — reference image for pose retargeting
+- `retarget_image` (optional) — reference image for pose retargeting. Any size or shape works.
+  - It is detected and measured at its own size.
+  - Fixed 2026-11-03: before, a reference whose size differed from the video's was cropped in the wrong place.
 
 **Outputs:**
 - `pose_data` — full pose pipeline data (POSEDATA)
