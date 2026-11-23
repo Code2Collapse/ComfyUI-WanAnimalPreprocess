@@ -182,3 +182,8 @@ label, so screen readers announce them by name. Typing 0 into a number box whose
 
 A drop-down in this pack's node panels with a long option (an OCIO view name, a long file name) no longer runs
 past the node edge: it shrinks to the panel and ends the text with "...". The full name is still in the list.
+
+## Draw Animal ViTPose without a reference image (2026-11-23)
+
+Without a retarget reference, a clip larger or smaller than the output size now draws its skeleton where it is in the
+frame. Before, a 1664x960 clip drawn at 832x480 came out black.
