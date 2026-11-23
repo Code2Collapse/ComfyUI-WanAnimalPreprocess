@@ -324,12 +324,25 @@ class DrawAnimalViTPose:
         crop_target_image = None
         pose_images = []
 
+        retargeted = pose_data.get("refer_pose_meta") is not None
         for idx, meta in enumerate(tqdm(pose_metas, desc="Drawing animal pose images")):
-            canvas = np.zeros((height, width, 3), dtype=np.uint8)
+            # L9.315 (same fix as WanAnimatePreprocessV2 L9.121 W6): without a retarget the metas are in SOURCE
+            # pixels. Drawing them on a target-size canvas put a 1664x960 clip's skeleton off an 832x480 canvas
+            # (all black). Draw on a source-size canvas, then padding-resize to the target (official Wan2.2 order).
+            # An explicit stick width is in OUTPUT pixels, so it is scaled up by the same factor first.
+            src_h, src_w = int(getattr(meta, "height", 0) or 0), int(getattr(meta, "width", 0) or 0)
+            stick = body_stick_width
+            if not retargeted and src_h > 0 and src_w > 0 and (src_h, src_w) != (int(height), int(width)):
+                canvas = np.zeros((src_h, src_w, 3), dtype=np.uint8)
+                scale = min(int(height) / src_h, int(width) / src_w)
+                if int(body_stick_width) > 0 and scale > 0:
+                    stick = max(1, int(round(int(body_stick_width) / scale)))
+            else:
+                canvas = np.zeros((height, width, 3), dtype=np.uint8)
             pose_image = draw_animal_pose_by_meta(
                 canvas, meta,
                 draw_head=draw_head,
-                body_stick_width=body_stick_width,
+                body_stick_width=stick,
                 dataset=dataset,
             )
 
