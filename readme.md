@@ -187,3 +187,5 @@ past the node edge: it shrinks to the panel and ends the text with "...". The fu
 
 Without a retarget reference, a clip larger or smaller than the output size now draws its skeleton where it is in the
 frame. Before, a 1664x960 clip drawn at 832x480 came out black.
+- Body stick width 0 now draws no body, as its tooltip says. A missing onnxruntime no longer hides the whole pack: the
+  detection node says what to install.
