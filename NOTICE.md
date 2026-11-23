@@ -32,3 +32,31 @@ conventions established by the Alibaba Wan Team open-source project.
 
 **Repository**: <https://github.com/opencv/opencv>  
 **License**: Apache License 2.0 (since OpenCV 4.5)
+
+---
+
+## 4. ComfyUI-WanAnimatePreprocess (kijai)
+
+The five nodes follow the structure of kijai's Wan-Animate preprocessor (model loader, pose and detection, draw, retarget
+prompt helper, One-to-All detection), rewritten for the AP-10K animal skeleton.
+
+**Repository**: <https://github.com/kijai/ComfyUI-WanAnimatePreprocess>  
+**License**: Apache License 2.0
+
+---
+
+## 5. easy_ViTPose (JunkyByte)
+
+The animal ViTPose models and their keypoint decoding.
+
+**Repository**: <https://github.com/JunkyByte/easy_ViTPose>  
+**License**: Apache License 2.0
+
+---
+
+## 6. One-to-All-Animation
+
+The pose alignment used by the One-to-All node (`onetoall/`).
+
+**Repository**: <https://github.com/ssj9596/One-to-All-Animation>  
+**License**: Apache License 2.0
