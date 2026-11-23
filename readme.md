@@ -189,3 +189,9 @@ Without a retarget reference, a clip larger or smaller than the output size now 
 frame. Before, a 1664x960 clip drawn at 832x480 came out black.
 - Body stick width 0 now draws no body, as its tooltip says. A missing onnxruntime no longer hides the whole pack: the
   detection node says what to install.
+
+## Readable in light and dark themes (2026-11-23)
+
+Node panels from this pack were checked in both renderers, light and dark themes, two display scales and three zoom
+levels. Dim text, badges and chips now reach the WCAG contrast of 4.5:1, and the C2C colours apply wherever a panel is
+shown. Saved workflows are unchanged.
