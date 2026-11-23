@@ -6,7 +6,7 @@ ComfyUI custom nodes for **animal pose estimation** using [ViTPose](https://gith
 
 - **Animal detection** via YOLOv8 ONNX — cats, dogs, horses, sheep, cows, elephants, bears, zebras, giraffes, birds
 - **17-keypoint animal pose estimation** via ViTPose ONNX
-- **Dual dataset support** — AP10k and APT36k, selectable per workflow
+- **Dual dataset support** — works with AP10k and APT36k ViTPose models (same 17-keypoint skeleton)
 - **Pose retargeting** from template video to reference animal image
 - **OneToAll animation** integration with ref/pose/none alignment modes
 - Skeleton visualization with configurable stick width, head toggle
@@ -88,7 +88,7 @@ Loads ViTPose and YOLO ONNX models.
 **Inputs:**
 - `vitpose_model` — ViTPose ONNX file from detection folder
 - `yolo_model` — YOLOv8 ONNX file from detection folder
-- `dataset` — **ap10k** or **apt36k** (must match your ViTPose model)
+- `dataset` — **ap10k** or **apt36k**: name the dataset your ViTPose file was trained on. It is kept with the model for reference only; both use the same skeleton, so the drawn pose is identical. A ViTPose file that does not give 17 keypoints (for example the human wholebody model) stops with a clear message.
 - `onnx_device` — CUDA or CPU
 
 **Output:** `POSEMODEL` — model bundle for downstream nodes
@@ -117,7 +117,7 @@ Renders pose skeleton images from pose data.
 - `width` / `height` — canvas dimensions
 - `retarget_padding` — padding for retarget resize (0 = disabled)
 - `body_stick_width` — skeleton line width (-1 = auto)
-- `draw_head` — toggle head keypoints (eyes, nose)
+- `draw_head` — toggle the head: eyes, nose and the nose-to-neck line
 
 **Output:** `pose_images` — rendered skeleton frames (IMAGE batch)
 
