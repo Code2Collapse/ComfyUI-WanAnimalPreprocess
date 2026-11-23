@@ -177,3 +177,8 @@ A complete, auto-generated reference covering every node, return type and widget
 The sliders, number boxes, drop-downs, colour pickers and switches in this pack's node panels now carry their row
 label, so screen readers announce them by name. Typing 0 into a number box whose range starts below zero keeps 0
 (it used to jump to the minimum).
+
+## Drop-downs fit the panel (2026-11-23)
+
+A drop-down in this pack's node panels with a long option (an OCIO view name, a long file name) no longer runs
+past the node edge: it shrinks to the panel and ends the text with "...". The full name is still in the list.
