@@ -336,6 +336,12 @@ class ViTPose(SimpleOnnxInference):
 
     def forward(self, img, center, scale, **kwargs):
         heatmaps = self.session.run([], {self.session.get_inputs()[0].name: img})[0]
+        if heatmaps.ndim != 4 or heatmaps.shape[1] != 17:
+            n = heatmaps.shape[1] if heatmaps.ndim == 4 else "an unexpected number of"
+            raise ValueError(
+                f"The selected ViTPose model gives {n} keypoints, but animal pose needs a 17-keypoint AP-10K / APT-36K "
+                "animal ViTPose. The 'detection' folder is shared with the human Wan Animate packs: pick the animal "
+                "ViTPose file in the loader (a 133-keypoint wholebody model is the human one).")
         points, prob = keypoints_from_heatmaps(heatmaps=heatmaps,
                                             center=center,
                                             scale=scale*200,

@@ -174,7 +174,7 @@ def draw_animal_pose_new(
     kp2ds = kp2ds.copy()
 
     if not draw_head:
-        kp2ds[[0, 1], 2] = 0  # Zero out eye confidence
+        kp2ds[[0, 1, 2], 2] = 0  # eyes + nose (AP-10K order): no head dots, no nose-eye or nose-neck limbs
 
     if body_stick_width == -1:
         stickwidth = max(int(min(H, W) / 200) - 1, 1)

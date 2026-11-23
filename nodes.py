@@ -64,9 +64,9 @@ class OnnxAnimalDetectionModelLoader:
                 }),
                 "dataset": (["ap10k", "apt36k"], {
                     "default": "ap10k",
-                    "tooltip": "Dataset the ViTPose model was trained on. "
-                               "AP10k: 23 animal families, good for common animals (cat, dog, horse). "
-                               "APT36k: 30 species, broader coverage and more training data.",
+                    "tooltip": "Dataset the ViTPose model was trained on - pick the one your ViTPose file names. "
+                               "It is kept with the model for reference only: both use the same 17-keypoint "
+                               "animal skeleton here, so the drawn poses are identical either way.",
                 }),
                 "onnx_device": (["CUDAExecutionProvider", "CPUExecutionProvider"], {
                     "default": "CUDAExecutionProvider",
@@ -129,7 +129,7 @@ class AnimalPoseAndDetection:
     OUTPUT_TOOLTIPS = (
         "Animal pose dict bundle. Feed into Draw Animal ViT Pose.",
         "Key-frame body keypoints as JSON string.",
-        "Per-frame body BBOX list.",
+        "Frame 0's body box (x1, y1, x2, y2) as a one-item list - not one box per frame.",
     )
     FUNCTION = "process"
     CATEGORY = "WanAnimalPreprocess"
@@ -209,6 +209,7 @@ class AnimalPoseAndDetection:
         # Extract keypoints
         kp2ds = []
         for img, bbox in tqdm(zip(images_np, bboxes), total=len(images_np), desc="Extracting animal keypoints"):
+            _IC.check()
             if bbox is None or bbox[-1] <= 0 or (bbox[2] - bbox[0]) < 10 or (bbox[3] - bbox[1]) < 10:
                 bbox = np.array([0, 0, img.shape[1], img.shape[0]])
 
@@ -293,7 +294,7 @@ class DrawAnimalViTPose:
                 "body_stick_width": ("INT", {"default": -1, "min": -1, "max": 20, "step": 1,
                                               "tooltip": "Width of the body sticks. Set to 0 to disable body drawing, -1 for auto"}),
                 "draw_head": ("BOOLEAN", {"default": True,
-                                           "tooltip": "Whether to draw head keypoints (eyes, nose)"}),
+                                           "tooltip": "Whether to draw the head: eyes, nose and the nose-to-neck line."}),
             },
         }
 
@@ -466,9 +467,11 @@ class AnimalPoseDetectionOneToAllAnimation:
     RETURN_NAMES = ("pose_images", "ref_pose_image", "ref_image", "ref_mask")
     OUTPUT_TOOLTIPS = (
         "Per-frame rendered pose IMAGE batch.",
-        "Pose image rendered from the reference frame (single image).",
+        "Pose image rendered from the reference frame (single image). Size: width x height in ref / none mode; "
+        "the reference image's own size in pose mode.",
         "The retargeted reference IMAGE.",
-        "Foreground MASK for the reference subject.",
+        "ref / none mode: all zeros (no foreground mask is computed). pose mode: 1 where the warped reference "
+        "left the frame (the empty border), 0 elsewhere.",
     )
     FUNCTION = "process"
     CATEGORY = "WanAnimalPreprocess"
@@ -551,6 +554,7 @@ class AnimalPoseDetectionOneToAllAnimation:
         # Extract keypoints
         kp2ds = []
         for img, bbox in tqdm(zip(images_np, bboxes), total=len(images_np), desc="Extracting animal keypoints"):
+            _IC.check()
             if bbox is None or bbox[-1] <= 0 or (bbox[2] - bbox[0]) < 10 or (bbox[3] - bbox[1]) < 10:
                 bbox = np.array([0, 0, img.shape[1], img.shape[0]])
 
