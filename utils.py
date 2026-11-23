@@ -188,9 +188,11 @@ def resize_to_bounds(img_ori, height=512, width=512, padding_color=(0, 0, 0), in
             mask = np.any(ref != 0, axis=2)
         coords = np.argwhere(mask)
         if coords.size == 0:
-            # All black, fallback to full image
-            y0, x0 = 0, 0
-            y1, x1 = img_ori.shape[0], img_ori.shape[1]
+            # All black, fallback to full image (L9.315: the crop / pad bounds below were never set here, so a blank
+            # first pose frame raised UnboundLocalError)
+            pad_y0, pad_x0 = 0, 0
+            pad_y1, pad_x1 = img_ori.shape[0], img_ori.shape[1]
+            crop_y0, crop_x0, crop_y1, crop_x1 = pad_y0, pad_x0, pad_y1, pad_x1
         else:
             y0, x0 = coords.min(axis=0)
             y1, x1 = coords.max(axis=0) + 1

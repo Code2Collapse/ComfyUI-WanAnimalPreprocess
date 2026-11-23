@@ -346,7 +346,8 @@ class DrawAnimalViTPose:
                 dataset=dataset,
             )
 
-            if crop_target_image is None:
+            # the first frame that shows a pose sets the retarget crop (L9.315: a blank first frame cropped nothing)
+            if crop_target_image is None and (pose_image.any() or idx == len(pose_metas) - 1):
                 crop_target_image = pose_image
 
             if use_retarget_resize:
