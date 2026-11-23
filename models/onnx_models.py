@@ -3,7 +3,20 @@
 import cv2
 import numpy as np
 import torch
-import onnxruntime
+try:  # L9.315: an unguarded import made the whole pack vanish when onnxruntime is missing or broken
+    import onnxruntime
+except Exception as _ort_exc:  # noqa: BLE001 - reported when a model is loaded, not at pack import
+    onnxruntime = None
+    _ORT_ERROR = f"{type(_ort_exc).__name__}: {_ort_exc}"
+else:
+    _ORT_ERROR = ""
+
+
+def _require_onnxruntime():
+    if onnxruntime is None:
+        raise RuntimeError("WanAnimalPreprocess needs the onnxruntime package to run its detection models, and it "
+                           f"could not be imported ({_ORT_ERROR}). Install onnxruntime-gpu (NVIDIA) or onnxruntime "
+                           "into ComfyUI's Python, then restart ComfyUI.")
 import logging
 import os
 
@@ -39,6 +52,7 @@ class SimpleOnnxInference(object):
         # would silently fall back to CPU when 'cuda' was passed (alias bug)
         # or when CUDAExecutionProvider was requested but onnxruntime-cpu
         # was installed instead of onnxruntime-gpu.
+        _require_onnxruntime()
         device = _normalize_onnx_provider(device)
         available = onnxruntime.get_available_providers()
         if device not in available:

@@ -188,6 +188,10 @@ def draw_animal_pose_new(
         limb_seq.extend(ANIMAL_HEAD_LIMBS)
         colors.extend(ANIMAL_HEAD_COLORS)
 
+    # body_stick_width 0 = no body drawing (the node's tooltip promises this; cv2 drew 0-width sticks and dots anyway)
+    if stickwidth <= 0:
+        limb_seq, colors = [], []
+
     # Draw limbs
     for (k1_idx, k2_idx), color in zip(limb_seq, colors):
         if k1_idx >= len(kp2ds) or k2_idx >= len(kp2ds):
@@ -214,7 +218,7 @@ def draw_animal_pose_new(
 
     # Draw keypoints
     for kp_idx, keypoint in enumerate(kp2ds):
-        if keypoint[-1] < threshold:
+        if stickwidth <= 0 or keypoint[-1] < threshold:
             continue
         x, y = keypoint[0], keypoint[1]
         kp_color = ANIMAL_KP_COLORS[kp_idx] if kp_idx < len(ANIMAL_KP_COLORS) else (0, 0, 255)
