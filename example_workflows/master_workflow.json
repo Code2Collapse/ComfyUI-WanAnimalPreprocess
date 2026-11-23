@@ -1,6 +1,8 @@
 {
+  "id": "00000000-0000-0000-0000-000000000000",
+  "revision": 0,
   "last_node_id": 5,
-  "last_link_id": 5,
+  "last_link_id": 4,
   "nodes": [
     {
       "id": 1,
@@ -10,201 +12,626 @@
         40
       ],
       "size": [
-        320,
-        130
+        282.798828125,
+        102
       ],
       "flags": {},
       "order": 0,
       "mode": 0,
-      "properties": {
-        "Node name for S&R": "LoadImage"
-      },
-      "title": "Load Animal Footage",
-      "widgets_values": [
-        "dog_clip.png",
-        "image"
+      "showAdvanced": null,
+      "inputs": [
+        {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "image",
+          "locked": null,
+          "name": "image",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        },
+        {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "choose file to upload",
+          "locked": null,
+          "name": "upload",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          },
+          "link": null
+        }
       ],
       "outputs": [
         {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "IMAGE",
+          "locked": null,
           "name": "IMAGE",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
           "type": "IMAGE",
+          "pos": null,
+          "slot_index": null,
           "links": [
-            1,
-            3
-          ],
-          "slot_index": 0
+            2
+          ]
         },
         {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "MASK",
+          "locked": null,
           "name": "MASK",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
           "type": "MASK",
-          "links": [],
-          "slot_index": 1
+          "pos": null,
+          "slot_index": null,
+          "links": null
         }
-      ]
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "c2c_p02_texture.png",
+        "image"
+      ],
+      "widgets_values_named": {
+        "image": "c2c_p02_texture.png",
+        "upload": "image"
+      }
     },
     {
       "id": 2,
       "type": "OnnxAnimalDetectionModelLoader",
       "pos": [
         40,
-        240
+        380
       ],
       "size": [
-        320,
+        357.4576171875,
         130
       ],
       "flags": {},
       "order": 1,
       "mode": 0,
-      "properties": {
-        "Node name for S&R": "OnnxAnimalDetectionModelLoader"
-      },
-      "title": "Animal Pose Loader",
-      "widgets_values": [
-        "animal_pose_vitpose.onnx",
-        "auto"
+      "showAdvanced": null,
+      "inputs": [
+        {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "vitpose_model",
+          "locked": null,
+          "name": "vitpose_model",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "COMBO",
+          "widget": {
+            "name": "vitpose_model"
+          },
+          "link": null
+        },
+        {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "yolo_model",
+          "locked": null,
+          "name": "yolo_model",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "COMBO",
+          "widget": {
+            "name": "yolo_model"
+          },
+          "link": null
+        },
+        {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "dataset",
+          "locked": null,
+          "name": "dataset",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "COMBO",
+          "widget": {
+            "name": "dataset"
+          },
+          "link": null
+        },
+        {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "onnx_device",
+          "locked": null,
+          "name": "onnx_device",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "COMBO",
+          "widget": {
+            "name": "onnx_device"
+          },
+          "link": null
+        }
       ],
       "outputs": [
         {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "model",
+          "locked": null,
           "name": "model",
-          "type": "ONNX_MODEL",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "POSEMODEL",
+          "pos": null,
+          "slot_index": null,
           "links": [
-            2
-          ],
-          "slot_index": 0
+            1
+          ]
         }
-      ]
+      ],
+      "properties": {
+        "Node name for S&R": "OnnxAnimalDetectionModelLoader"
+      },
+      "widgets_values": [
+        null,
+        null,
+        "ap10k",
+        "CUDAExecutionProvider"
+      ],
+      "widgets_values_named": {
+        "vitpose_model": null,
+        "yolo_model": null,
+        "dataset": "ap10k",
+        "onnx_device": "CUDAExecutionProvider"
+      },
+      "color": "#12132f",
+      "bgcolor": "#0c0d23"
     },
     {
       "id": 3,
       "type": "AnimalPoseAndDetection",
       "pos": [
-        440,
-        40
+        460,
+        120
       ],
       "size": [
-        320,
-        130
+        321.755859375,
+        122
       ],
       "flags": {},
       "order": 2,
       "mode": 0,
-      "properties": {
-        "Node name for S&R": "AnimalPoseAndDetection"
-      },
-      "title": "Detect Pose",
-      "widgets_values": [
-        0.5,
-        0.45
-      ],
-      "outputs": [
-        {
-          "name": "pose",
-          "type": "POSE",
-          "links": [
-            4
-          ],
-          "slot_index": 0
-        },
-        {
-          "name": "bbox",
-          "type": "BBOX",
-          "links": [],
-          "slot_index": 1
-        }
-      ],
+      "showAdvanced": null,
       "inputs": [
         {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "model",
+          "locked": null,
           "name": "model",
-          "type": "ONNX_MODEL",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "POSEMODEL",
+          "pos": null,
+          "link": 1
+        },
+        {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "images",
+          "locked": null,
+          "name": "images",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "IMAGE",
+          "pos": null,
           "link": 2
         },
         {
-          "name": "image",
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "retarget_image",
+          "locked": null,
+          "name": "retarget_image",
+          "nameLocked": null,
+          "removable": null,
+          "shape": 7,
           "type": "IMAGE",
-          "link": 1
+          "pos": null,
+          "link": null
+        },
+        {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "width",
+          "locked": null,
+          "name": "width",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": null
+        },
+        {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "height",
+          "locked": null,
+          "name": "height",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": null
         }
-      ]
+      ],
+      "outputs": [
+        {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "pose_data",
+          "locked": null,
+          "name": "pose_data",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "POSEDATA",
+          "pos": null,
+          "slot_index": null,
+          "links": [
+            3
+          ]
+        },
+        {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "key_frame_body_points",
+          "locked": null,
+          "name": "key_frame_body_points",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "STRING",
+          "pos": null,
+          "slot_index": null,
+          "links": null
+        },
+        {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "bboxes",
+          "locked": null,
+          "name": "bboxes",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "BBOX",
+          "pos": null,
+          "slot_index": null,
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AnimalPoseAndDetection"
+      },
+      "widgets_values": [
+        832,
+        480
+      ],
+      "widgets_values_named": {
+        "width": 832,
+        "height": 480
+      },
+      "color": "#12132f",
+      "bgcolor": "#0c0d23"
     },
     {
       "id": 4,
       "type": "DrawAnimalViTPose",
       "pos": [
-        840,
-        40
+        860,
+        120
       ],
       "size": [
-        320,
-        130
+        270,
+        154
       ],
       "flags": {},
       "order": 3,
       "mode": 0,
-      "properties": {
-        "Node name for S&R": "DrawAnimalViTPose"
-      },
-      "title": "Draw Pose",
-      "widgets_values": [
-        true,
-        true,
-        2.0
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            5
-          ],
-          "slot_index": 0
-        }
-      ],
+      "showAdvanced": null,
       "inputs": [
         {
-          "name": "image",
-          "type": "IMAGE",
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "pose_data",
+          "locked": null,
+          "name": "pose_data",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "POSEDATA",
+          "pos": null,
           "link": 3
         },
         {
-          "name": "pose",
-          "type": "POSE",
-          "link": 4
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "width",
+          "locked": null,
+          "name": "width",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": null
+        },
+        {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "height",
+          "locked": null,
+          "name": "height",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": null
+        },
+        {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "retarget_padding",
+          "locked": null,
+          "name": "retarget_padding",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "INT",
+          "widget": {
+            "name": "retarget_padding"
+          },
+          "link": null
+        },
+        {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "body_stick_width",
+          "locked": null,
+          "name": "body_stick_width",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "INT",
+          "widget": {
+            "name": "body_stick_width"
+          },
+          "link": null
+        },
+        {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "draw_head",
+          "locked": null,
+          "name": "draw_head",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "draw_head"
+          },
+          "link": null
         }
-      ]
+      ],
+      "outputs": [
+        {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "pose_images",
+          "locked": null,
+          "name": "pose_images",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "IMAGE",
+          "pos": null,
+          "slot_index": null,
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DrawAnimalViTPose"
+      },
+      "widgets_values": [
+        832,
+        480,
+        16,
+        -1,
+        true
+      ],
+      "widgets_values_named": {
+        "width": 832,
+        "height": 480,
+        "retarget_padding": 16,
+        "body_stick_width": -1,
+        "draw_head": true
+      },
+      "color": "#12132f",
+      "bgcolor": "#0c0d23"
     },
     {
       "id": 5,
       "type": "SaveImage",
       "pos": [
-        1240,
-        40
+        1260,
+        120
       ],
       "size": [
-        320,
-        130
+        270,
+        58
       ],
       "flags": {},
       "order": 4,
       "mode": 0,
-      "properties": {
-        "Node name for S&R": "SaveImage"
-      },
-      "title": "Save",
-      "widgets_values": [
-        "wan_animal_pose_%batch_num%"
-      ],
+      "showAdvanced": null,
       "inputs": [
         {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "images",
+          "locked": null,
           "name": "images",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
           "type": "IMAGE",
-          "link": 5
+          "pos": null,
+          "link": 4
+        },
+        {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "filename_prefix",
+          "locked": null,
+          "name": "filename_prefix",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
         }
-      ]
+      ],
+      "outputs": [
+        {
+          "color_off": null,
+          "color_on": null,
+          "dir": null,
+          "label": null,
+          "localized_name": "images",
+          "locked": null,
+          "name": "images",
+          "nameLocked": null,
+          "removable": null,
+          "shape": null,
+          "type": "IMAGE",
+          "pos": null,
+          "slot_index": null,
+          "links": null
+        }
+      ],
+      "properties": {},
+      "widgets_values": [
+        "WanAnimal_pose"
+      ],
+      "widgets_values_named": {
+        "filename_prefix": "WanAnimal_pose"
+      }
     }
   ],
   "links": [
     [
       1,
+      2,
+      0,
+      3,
+      0,
+      "POSEMODEL"
+    ],
+    [
+      2,
       1,
       0,
       3,
@@ -212,31 +639,15 @@
       "IMAGE"
     ],
     [
-      2,
-      2,
-      0,
       3,
-      0,
-      "ONNX_MODEL"
-    ],
-    [
-      3,
-      1,
-      0,
-      4,
-      0,
-      "IMAGE"
-    ],
-    [
-      4,
       3,
       0,
       4,
-      1,
-      "POSE"
+      0,
+      "POSEDATA"
     ],
     [
-      5,
+      4,
       4,
       0,
       5,
@@ -244,8 +655,19 @@
       "IMAGE"
     ]
   ],
+  "floatingLinks": null,
   "groups": [],
+  "definitions": null,
   "config": {},
-  "extra": {},
+  "extra": {
+    "ds": {
+      "scale": 1,
+      "offset": [
+        0,
+        0
+      ]
+    },
+    "reroutes": null
+  },
   "version": 0.4
 }
